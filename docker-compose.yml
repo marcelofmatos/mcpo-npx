@@ -17,8 +17,8 @@ services:
     deploy:
       mode: replicated
       replicas: 1
-      placement:
-        constraints: [node.hostname == $NODE_HOSTNAME]
+      #placement:
+      #  constraints: [node.hostname == $NODE_HOSTNAME]
       labels:
         - traefik.enable=true
         - traefik.http.routers.mcp-postgres-ai.tls.certresolver=myresolver
@@ -30,3 +30,6 @@ services:
         - traefik.http.middlewares.mcp-postgres-ai-cors.headers.accessControlAllowCredentials=true
         - traefik.http.middlewares.mcp-postgres-ai-cors.headers.accessControlMaxAge=3600
         - traefik.http.routers.mcp-postgres-ai.middlewares=mcp-postgres-ai-cors
+
+networks:
+  proxy:
