@@ -2,7 +2,7 @@ services:
   mcp-postgres:
     image: ghcr.io/marcelofmatos/mcpo-npx:main
     entrypoint: "uvx mcpo"
-    #command: "--host 0.0.0.0 --port 8000 --api-key S1sOo1A7S7pW --name 'banco de dados teste' -- npx -y @modelcontextprotocol/server-postgres postgresql://postgres:postgres@server:5435/database?schema=public "
+    #command: "--host 0.0.0.0 --port 8000 --api-key $API_KEY --name 'banco de dados teste' -- npx -y @modelcontextprotocol/server-postgres postgresql://postgres:postgres@server:5435/database?schema=public "
     command: "--host 0.0.0.0 --port 8000 --name 'banco de dados teste' -- npx -y @modelcontextprotocol/server-postgres postgresql://postgres:postgres@server:5435/database?schema=public "
     #image: mcp/postgres
     #image: 3apaxicom/npx
