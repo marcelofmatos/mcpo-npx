@@ -1,0 +1,32 @@
+services:
+  mcp-postgres:
+    image: ghcr.io/marcelofmatos/mcpo-npx:main
+    entrypoint: "uvx mcpo"
+    #command: "--host 0.0.0.0 --port 8000 --api-key S1sOo1A7S7pW --name 'banco de dados teste' -- npx -y @modelcontextprotocol/server-postgres postgresql://postgres:postgres@server:5435/database?schema=public "
+    command: "--host 0.0.0.0 --port 8000 --name 'banco de dados teste' -- npx -y @modelcontextprotocol/server-postgres postgresql://postgres:postgres@server:5435/database?schema=public "
+    #image: mcp/postgres
+    #image: 3apaxicom/npx
+    #entrypoint: 'bash -c'
+    #command: '-- npx  postgresql://postgres:postgres@server:5435/sme_dataworld?schema=public'
+    #image: groad/mcpo
+    #volumes:
+    #  - mcpo-config:/etc/mcp-config
+    networks:
+      - default
+      - proxy
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.hostname == $NODE_HOSTNAME]
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.mcp-postgres-ai.tls.certresolver=myresolver
+        - traefik.http.services.mcp-postgres-ai.loadbalancer.server.port=8000
+        - traefik.http.middlewares.mcp-postgres-ai-cors.headers.accessControlAllowOriginList=*
+        - traefik.http.middlewares.mcp-postgres-ai-cors.headers.accessControlAllowMethods=GET,POST,PUT,DELETE,OPTIONS,PATCH
+        - traefik.http.middlewares.mcp-postgres-ai-cors.headers.accessControlAllowHeaders=*
+        - traefik.http.middlewares.mcp-postgres-ai-cors.headers.accessControlExposeHeaders=Content-Length,Content-Range
+        - traefik.http.middlewares.mcp-postgres-ai-cors.headers.accessControlAllowCredentials=true
+        - traefik.http.middlewares.mcp-postgres-ai-cors.headers.accessControlMaxAge=3600
+        - traefik.http.routers.mcp-postgres-ai.middlewares=mcp-postgres-ai-cors
